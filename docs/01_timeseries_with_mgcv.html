@@ -558,7 +558,14 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(m4, <span class="at">select=</span><span class="st">"s(time)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># draw(m4, select="s(time)")</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>pred_plot <span class="ot">&lt;-</span> <span class="fu">plot_model_prediction</span>(m4, streamflow_data, <span class="at">exp_bool =</span> T)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    pred_plot,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    pred_plot <span class="sc">+</span> <span class="fu">scale_y_log10</span>(),</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -566,12 +573,11 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pred_plot <span class="ot">&lt;-</span> <span class="fu">plot_model_prediction</span>(m4, streamflow_data, <span class="at">exp_bool =</span> T)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    pred_plot,</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    pred_plot <span class="sc">+</span> <span class="fu">scale_y_log10</span>(),</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    pred_plot,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(<span class="fu">derivatives</span>(m4, <span class="at">select=</span><span class="st">"s(time)"</span>), <span class="at">add_change =</span> <span class="cn">TRUE</span>, <span class="at">change_type =</span> <span class="st">"sizer"</span>),</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -579,23 +585,11 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    pred_plot,</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(<span class="fu">derivatives</span>(m4, <span class="at">select=</span><span class="st">"s(time)"</span>), <span class="at">add_change =</span> <span class="cn">TRUE</span>, <span class="at">change_type =</span> <span class="st">"sizer"</span>),</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-8-5.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>We have a really good fit now, we are explaining a lot of the variance (R-sq.(adj) = 0.881). We have some interesting and realistic looking smooths on the new variables of rainfall and SOI with low uncertainty. The SOI smooth looks reasonable, during periods of high SOI (La Niña) we might expect wetter conditions compared to periods of low SOI (El Niño). The smooths are all determined to be significant by <code>mgcv</code> but note our time smooth has changed from <code>m3</code>, though again with p=0.00723.</p>
 <p>But all is not well with our time smooth. We use the <code>gam.check()</code> diagnostic to check our model and the basis dimension checking (see the returned text) is returning that something is off about the <code>s(time)</code> smooth. It’s indicating that we may need to increase the number of maximum knots in the smooth above the default <code>k=10</code> to fully explore the space of possible functions. You can see <code>choose.k</code> for more information on this diagnostic and we will explore the implications of this below.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam.check</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam.check</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -628,20 +622,20 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h2 data-number="3.3" class="anchored" data-anchor-id="wiggliness"><span class="header-section-number">3.3</span> Wiggliness</h2>
 <p>Below we look at the effects of increasing the maximum number of knots in the time smooth. Smooths have of course a penalty term which controls the wiggliness of the smooth as it attempts to fit the data. However, there is still some trade-off allowed between the complexity of the smooth and goodness of fit. By increasing <code>k</code>, we allow the model to explore a broader range of possible fits to the data and find that there are some fits to the data that better navigate that trade-off. Thus the smooth changes as we increase <code>k</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>m4_med <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">k=</span><span class="dv">30</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>m4_lrg <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">compare_smooths</span>(</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    m4, m4_med, m4_lrg, <span class="at">select =</span> <span class="st">"s(time)"</span></span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>m4_med <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">k=</span><span class="dv">30</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>m4_lrg <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">compare_smooths</span>(</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    m4, m4_med, m4_lrg, <span class="at">select =</span> <span class="st">"s(time)"</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -653,7 +647,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>But are these trends really realistic? What are the other possible explanations for this highly variable time trend? One of the common afflictions of timeseries data is autocorrelation and particularly for us problems can arise when the residuals are not independent (i.i.d.). We could for instance imagine a flood event with a duration that spans multiple data points leading to correlated residuals in time if our model consistently under predicts an event perhaps. Or perhaps there are storages in the system which result could result in extented periods of increased baseflow after an event occurs. Here we model on the monthly scale so perhaps in non-synthetic data it would be less of a problem, but we could still imagine processes on medium timescales leading to autocorrelation in the residuals of our imperfect model.</p>
 <p>What makes it particularly bad in this situation, however, is that we have a very flexible term (<code>s(time)</code>) which is able to absorb some of this autocorrelation. If residuals were purely independent it wouldn’t be a problem as only having a number of knots close to/equal to the number of observations would really drive these residuals into our time smooth. With autocorrelated residuals though, the model picks up these patterns and does what it does best, fits them using any and every means available to it. Lets not blame the model, its really trying its very best. But this process means that our flexible smooth on time can absorb/fit these patterns if we give it sufficient flexibility (as in the k=30,100 cases). Lets do a check for autocorrelation in the residuals.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">residuals</span>(m4, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># acf(residuals(m4, type="response"))</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">residuals</span>(m4, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -661,27 +656,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">residuals</span>(m4, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># acf(residuals(m4_med, type="response"))</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">residuals</span>(m4_med, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">residuals</span>(m4_med, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">residuals</span>(m4_med, <span class="at">type=</span><span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -692,15 +672,15 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h2 data-number="3.4" class="anchored" data-anchor-id="facing-down-autocorrelation"><span class="header-section-number">3.4</span> Facing down autocorrelation</h2>
 <p>So how can we deal with this? Well up until this point we have been using the <code>gam</code> function in <code>mgcv</code>, and we will find no help there. However, we can look to the <code>gamm</code> function which fits a Generalized Additive Mixed Model (GAMM). Again this post isn’t designed to be a textbook on GAM(M)s so practically for us it means that we can use <code>lme</code> correlation structures to model the residuals. This means we can tell the model to expect AR1 correlation residuals and account for these when fitting (instead of heaping these patterns into our precious time smooth). Specifically we will use the <code>correlation</code> argument and specify <code>corAR1()</code> (see <code>?corClasses</code>). Lets take a look shall we.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit again a model with a large number of knots for time, but now with AR1 residuals</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">gamm</span>(</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"REML"</span>,</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation =</span> <span class="fu">corAR1</span>(), <span class="co"># our correlation structure</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m5<span class="sc">$</span>gam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit again a model with a large number of knots for time, but now with AR1 residuals</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">gamm</span>(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"REML"</span>,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation =</span> <span class="fu">corAR1</span>(), <span class="co"># our correlation structure</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m5<span class="sc">$</span>gam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Family: gaussian 
@@ -727,7 +707,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 R-sq.(adj) =  0.873   
   Scale est. = 0.20355   n = 492</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">appraise</span>(m5<span class="sc">$</span>gam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">appraise</span>(m5<span class="sc">$</span>gam)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -735,7 +715,8 @@ R-sq.(adj) =  0.873
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">residuals</span>(m5<span class="sc">$</span>lme, <span class="at">type=</span><span class="st">"normalized"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># acf(residuals(m5$lme, type="normalized"))</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">residuals</span>(m5<span class="sc">$</span>lme, <span class="at">type=</span><span class="st">"normalized"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -743,7 +724,9 @@ R-sq.(adj) =  0.873
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(<span class="fu">residuals</span>(m5<span class="sc">$</span>lme, <span class="at">type=</span><span class="st">"normalized"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">compare_smooths</span>(</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    m4_lrg, m5<span class="sc">$</span>gam, <span class="at">select =</span> <span class="st">"s(time)"</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -751,38 +734,28 @@ R-sq.(adj) =  0.873
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">compare_smooths</span>(</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    m4_lrg, m5<span class="sc">$</span>gam, <span class="at">select =</span> <span class="st">"s(time)"</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-12-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>Hey! Comparing our time smooths from our <code>m4_mlrg</code> model above to our new <code>m5</code> model (the same model just with AR1 residuals structure specified in <code>gamm</code>, also see “A note” section), our time smooth is now looking much better. The model is no longer trying to fit the autocorrelation patterns using <code>s(time)</code> as expected. Lets go ahead and look at the smooths from our final model against the functions we used to create the synthetic data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the "true" relationships</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>gt_data <span class="ot">&lt;-</span> <span class="fu">generate_gtdata</span>()</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># compare to the smooths from m5</span></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(moy)"</span>) <span class="sc">+</span> </span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> moy, <span class="at">y =</span> f_moy), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(),</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(rain)"</span>) <span class="sc">+</span> </span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> rain, <span class="at">y =</span> f_rain), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(), </span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(SOI)"</span>) <span class="sc">+</span></span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> SOI, <span class="at">y =</span> f_SOI), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(),</span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(time)"</span>) <span class="sc">+</span> </span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> f_time), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(),</span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span></span>
-<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the "true" relationships</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>gt_data <span class="ot">&lt;-</span> <span class="fu">generate_gtdata</span>()</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co"># compare to the smooths from m5</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(moy)"</span>) <span class="sc">+</span> </span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> moy, <span class="at">y =</span> f_moy), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(),</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(rain)"</span>) <span class="sc">+</span> </span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> rain, <span class="at">y =</span> f_rain), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(), </span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(SOI)"</span>) <span class="sc">+</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> SOI, <span class="at">y =</span> f_SOI), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(),</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(m5, <span class="at">select=</span><span class="st">"s(time)"</span>) <span class="sc">+</span> </span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_line</span>(<span class="at">data=</span>gt_data, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> f_time), <span class="at">color=</span><span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme_minimal</span>(),</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -790,11 +763,11 @@ R-sq.(adj) =  0.873
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(<span class="fu">derivatives</span>(m5, <span class="at">select=</span><span class="st">"s(time)"</span>), <span class="at">add_change =</span> <span class="cn">TRUE</span>, <span class="at">change_type =</span> <span class="st">"sizer"</span>),</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_model_prediction</span>(m5<span class="sc">$</span>gam, streamflow_data, <span class="at">exp_bool =</span> T),</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">draw</span>(<span class="fu">derivatives</span>(m5, <span class="at">select=</span><span class="st">"s(time)"</span>), <span class="at">add_change =</span> <span class="cn">TRUE</span>, <span class="at">change_type =</span> <span class="st">"sizer"</span>),</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot_model_prediction</span>(m5<span class="sc">$</span>gam, streamflow_data, <span class="at">exp_bool =</span> T),</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">1</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -812,26 +785,26 @@ R-sq.(adj) =  0.873
 <p><code>gam</code> and <code>gamm</code> fit the model differently (also note from <code>?gamm</code> help: gamm is not as numerically stable as gam: an lme call will occasionally fail). Again the purpose of this post was just to show some of the issues with synthetic data, but I feel compelled to point out that <code>m4_med</code> fit with <code>gam</code> is not quite equivalent to <code>m5</code> fit with <code>gamm</code>. If you fit a <code>gamm</code> model with only <code>k=30</code> knots for time, you will get a different (reduced complexity) fit than with <code>gam</code>. All the points above still stand and the point was to demonstrate that taking into account autocorrelation is important. But to hammer things home, we look at the <code>k=100</code> case both with and without AR1 residuals with <code>gamm</code> and compare the time smooths. We also added specific knot values for the <code>moy</code> to specify the start and end point of our cyclic spline. I didn’t want to over complicate the <code>gam</code> models above as it doesn’t change any of our results, but this follows discussion in Pedersen et al.&nbsp;(2019) and is explored more in <a href="https://fromthebottomoftheheap.net/2015/11/21/climate-change-and-spline-interactions/">Gavin Simpson’s blog posts</a>.</p>
 <p>You can see the <code>gamm</code> model with AR1 residuals holds up even in the face of a very flexible time smooth. The reason to do things correctly is not that you wont get the right answers sometimes, but rather that the statistical beasts waiting to trip you up are always lurking in the shadows waiting to spoil your nice analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To drive the point home here are a huge number of knots</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>m4_lrg <span class="ot">&lt;-</span> <span class="fu">gamm</span>(</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">bs=</span><span class="st">"tp"</span>, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">knots =</span> <span class="fu">list</span>(<span class="at">moy =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">12</span>)),</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"REML"</span>,</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit again a model with a large number of knots for time, but now with AR1 residuals</span></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">gamm</span>(</span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">bs=</span><span class="st">"tp"</span>, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation =</span> <span class="fu">corAR1</span>(), <span class="co"># our correlation structure</span></span>
-<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">knots =</span> <span class="fu">list</span>(<span class="at">moy =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">12</span>)),</span>
-<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"REML"</span>,</span>
-<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
-<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">compare_smooths</span>(</span>
-<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>    m4_lrg, m5, <span class="at">select =</span> <span class="st">"s(time)"</span></span>
-<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To drive the point home here are a huge number of knots</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>m4_lrg <span class="ot">&lt;-</span> <span class="fu">gamm</span>(</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">bs=</span><span class="st">"tp"</span>, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">knots =</span> <span class="fu">list</span>(<span class="at">moy =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">12</span>)),</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"REML"</span>,</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit again a model with a large number of knots for time, but now with AR1 residuals</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">gamm</span>(</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    log_flow <span class="sc">~</span> <span class="fu">s</span>(time, <span class="at">bs=</span><span class="st">"tp"</span>, <span class="at">k=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">s</span>(moy, <span class="at">bs=</span><span class="st">"cc"</span>) <span class="sc">+</span> <span class="fu">s</span>(rain) <span class="sc">+</span> <span class="fu">s</span>(SOI),</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> streamflow_data,</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">correlation =</span> <span class="fu">corAR1</span>(), <span class="co"># our correlation structure</span></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">knots =</span> <span class="fu">list</span>(<span class="at">moy =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">12</span>)),</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"REML"</span>,</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link=</span><span class="st">"identity"</span>)</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a><span class="fu">draw</span>(<span class="fu">compare_smooths</span>(</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>    m4_lrg, m5, <span class="at">select =</span> <span class="st">"s(time)"</span></span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

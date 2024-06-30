@@ -5,9 +5,6 @@ format:
     toc: true
     number-sections: true
 editor: source
-project:
-  type: website
-  output-dir: docs
 ---
 
 # GAM learning
@@ -204,7 +201,7 @@ m4 <- gam(
 summary(m4)
 appraise(m4)
 draw(m4)
-draw(m4, select="s(time)")
+# draw(m4, select="s(time)")
 
 pred_plot <- plot_model_prediction(m4, streamflow_data, exp_bool = T)
 wrap_plots(
@@ -255,9 +252,9 @@ But are these trends really realistic? What are the other possible explanations 
 What makes it particularly bad in this situation, however, is that we have a very flexible term (`s(time)`) which is able to absorb some of this autocorrelation. If residuals were purely independent it wouldn't be a problem as only having a number of knots close to/equal to the number of observations would really drive these residuals into our time smooth. With autocorrelated residuals though, the model picks up these patterns and does what it does best, fits them using any and every means available to it. Lets not blame the model, its really trying its very best. But this process means that our flexible smooth on time can absorb/fit these patterns if we give it sufficient flexibility (as in the k=30,100 cases). Lets do a check for autocorrelation in the residuals.
 
 ```{r}
-acf(residuals(m4, type="response"))
+# acf(residuals(m4, type="response"))
 pacf(residuals(m4, type="response"))
-acf(residuals(m4_med, type="response"))
+# acf(residuals(m4_med, type="response"))
 pacf(residuals(m4_med, type="response"))
 ```
 
@@ -278,7 +275,7 @@ m5 <- gamm(
 )
 summary(m5$gam)
 appraise(m5$gam)
-acf(residuals(m5$lme, type="normalized"))
+# acf(residuals(m5$lme, type="normalized"))
 pacf(residuals(m5$lme, type="normalized"))
 
 draw(compare_smooths(
