@@ -1,3 +1,15 @@
+---
+title: "mgcv timeseries example"
+format:
+  html:
+    toc: true
+    number-sections: true
+editor: source
+project:
+  type: website
+  output-dir: docs
+---
+
 # GAM learning
 
 In this notebook we will explore the use of Generalised Additive Models (GAMs) for timeseries data using the `mgcv` package. There are many great resources on GAMs (see the "Further reading" section for a start), the idea of this notebook is to really guide readers towards these more comprehensive works. To this end we will show some of the power of GAMs and some of the potential pitfalls (in particular when it comes to timeseries data) in an example that will hopefully resonate more with those with a background in water.
