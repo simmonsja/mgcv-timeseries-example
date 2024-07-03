@@ -14,6 +14,32 @@ To make things easier we will be using synthetic data which will allow us to exp
 
 As a strand to follow through the analysis, we will set the aim of find the underlying time trend that is present beyond the influence that can be accounted for between the other climatic variables.
 
+```{r echo=F, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse)
+library(patchwork)
+streamflow_data <- read_csv(
+    paste("synthetic_data",paste0("synthetic_streamflow_data.csv"), sep = .Platform$file.sep)
+)
+```
+
+```{r echo=F}
+wrap_plots(
+    ggplot(streamflow_data, aes(x = month, y = flow)) +
+        geom_line() +
+        labs(
+            x = "Year",
+            y = "Streamflow (ML)"
+        ),
+    ggplot(streamflow_data, aes(x = month, y = rain)) +
+        geom_bar(stat = "identity") +
+        labs(
+            x = "Year",
+            y = "Rainfall (mm)"
+        ),
+    ncol = 1
+)
+```
+
 # A short word on GAMs
 
 GAMs are an extension on generalised linear models to incorporate nonlinear functions of the input variables. We will see a general equation below but the important parts we need to remember for our purposes are:

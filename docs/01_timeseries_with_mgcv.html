@@ -149,6 +149,15 @@ window.Quarto = {
 <p>In this notebook we will explore the use of Generalised Additive Models (GAMs) for timeseries data using the <code>mgcv</code> package. There are many great resources on GAMs (see the “Further reading” section for a start), the idea of this notebook is to really guide readers towards these more comprehensive works. To this end we will show the power of GAMs and some of the potential pitfalls (in particular when it comes to timeseries data) in an example that will hopefully resonate more for those with a background in water.</p>
 <p>To make things easier we will be using synthetic data which will allow us to explore the GAM fitting in a controlled way. We will be using a synthetic streamflow dataset which we aim to disentangle into the various components which contribute the overall signal.</p>
 <p>As a strand to follow through the analysis, we will set the aim of find the underlying time trend that is present beyond the influence that can be accounted for between the other climatic variables.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <section id="a-short-word-on-gams" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> A short word on GAMs</h1>
 <p>GAMs are an extension on generalised linear models to incorporate nonlinear functions of the input variables. We will see a general equation below but the important parts we need to remember for our purposes are:</p>
@@ -220,14 +229,14 @@ date (1): month
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -270,7 +279,7 @@ GCV = 1576.1  Scale est. = 1569.7    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -281,7 +290,7 @@ GCV = 1576.1  Scale est. = 1569.7    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -290,7 +299,7 @@ GCV = 1576.1  Scale est. = 1569.7    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -331,7 +340,7 @@ GCV = 1.5756  Scale est. = 1.5692    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -339,7 +348,7 @@ GCV = 1.5756  Scale est. = 1.5692    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -353,7 +362,7 @@ GCV = 1.5756  Scale est. = 1.5692    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -399,7 +408,7 @@ GCV = 1.3553  Scale est. = 1.3299    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -408,7 +417,7 @@ GCV = 1.3553  Scale est. = 1.3299    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -421,7 +430,7 @@ GCV = 1.3553  Scale est. = 1.3299    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -437,7 +446,7 @@ GCV = 1.3553  Scale est. = 1.3299    n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -484,7 +493,7 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -492,7 +501,7 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -505,7 +514,7 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -517,7 +526,7 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-9-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -529,7 +538,7 @@ GCV = 0.19462  Scale est. = 0.18793   n = 492</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -576,7 +585,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -589,7 +598,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -597,7 +606,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -647,7 +656,7 @@ R-sq.(adj) =  0.873
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -655,7 +664,7 @@ R-sq.(adj) =  0.873
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -665,7 +674,7 @@ R-sq.(adj) =  0.873
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -694,7 +703,7 @@ R-sq.(adj) =  0.873
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -707,7 +716,7 @@ R-sq.(adj) =  0.873
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -750,7 +759,7 @@ R-sq.(adj) =  0.873
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="01_timeseries_with_mgcv_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
