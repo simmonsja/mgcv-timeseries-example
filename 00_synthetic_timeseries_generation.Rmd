@@ -1,0 +1,175 @@
+# Synthetic timeseries data cases
+
+```{r}
+library(tidyverse)
+library(patchwork)
+source('functions/adj_gam_sim.R')
+```
+
+# Simulate some data
+
+We will simulate data for this example because we simply haven't the time to be dealing with the horrors of real world datasets. We will be creating a synthetic timeseries of streamflow data which is modelled with additive contributions from non linear transformations of common covariates.
+
+First lets define the functions we will be using to generate the data.
+
+```{r}
+set.seed(2319)
+source('functions/adj_gam_sim.R')
+gt_data <- generate_gtdata()
+
+# plot the functions we are trying to fit
+ggplot() +
+    stat_function(fun = f0, aes(color = 'f0')) +
+    # stat_function(fun = f1, aes(color = 'f1')) +
+    stat_function(fun = f2, aes(color = 'f2')) +
+    stat_function(fun = f3, aes(color = 'f3')) +
+    stat_function(fun = f4, aes(color = 'f4')) +
+    geom_line() +
+    theme_minimal()
+```
+
+## Load covariates
+
+We are using SOI and rainfall data from BOM to generate a streamflow timeseries.
+
+BOM SOI can be downloaded from (just save in `raw_data/soi.txt`):
+http://www.bom.gov.au/clim_data/IDCKGSH000/soi_monthly.txt
+
+BOM rainfall data can be downloaded from climate data online (just save the data csv file as `raw_data/66006.csv`):
+http://www.bom.gov.au/climate/data/ and search for 66006 in "3. Get the data"
+
+TODO: Work out the data conditions of use to see if I can just provide the csv synthetic data.
+
+```{r}
+# load SOI
+soi_data <- read_csv(
+    paste("raw_data","soi.txt", sep = .Platform$file.sep),
+    col_names = c("yyyymm", "SOI")
+)
+soi_data <- soi_data %>% mutate(
+    month = ym(yyyymm)
+)
+```
+
+```{r}
+# Load
+rainfall_data <- read_csv(
+    paste("raw_data", "66006.csv", sep = .Platform$file.sep)
+)
+
+rainfall_data <- rainfall_data %>% 
+    select(c("Year", "Month", "Day", "Rainfall amount (millimetres)")) %>%
+    rename(y = "Year", m = "Month", d = "Day", rain = "Rainfall amount (millimetres)") %>%
+    mutate(rain = ifelse(is.na(rain), 0, rain)) %>%
+    mutate(
+        date = ymd(paste(y, m, d, sep = "-")),
+        month = as.Date(floor_date(date, "month"))
+    ) %>% summarise(
+        rain = sum(rain),
+        .by = month
+    ) %>% left_join(
+        soi_data %>% select(month, SOI),
+        by = "month"
+    ) %>% mutate(
+        year = as.factor(year(month)),
+        moy = lubridate::month(month),
+        time = (lubridate::year(month) - lubridate::year(min(month)))*12 + lubridate::month(month)
+    )
+```
+
+## Modify the covariates data
+
+We are going to be devious and modify the data for maximum effect in the example - so we pick a period so that SOI and time are vaguely collinear.
+
+```{r}
+# and chop to some shorter more ambuiguous period
+rainfall_data <- rainfall_data %>% filter(month >= ym("198301"), month <= ym("202312"))
+# scale the variables so that we can use our nice f0-f4 functions
+rainfall_data <- rainfall_data %>% mutate(
+    time = time - min(time)
+) %>% mutate(
+    time = time/max(time), # time into 0-1,
+    moy = moy/max(moy), # month into 0-1
+    rain = (rain - min(rain))/(max(rain) - min(rain)), # rain into 0-1
+    SOI = (SOI - min(SOI))/(max(SOI) - min(SOI)) # SOI into 0-1
+)
+
+head(rainfall_data)
+```
+
+## Plot the covariates data
+
+```{r}
+# Annual summary plot
+ggplot(rainfall_data %>% summarise(month = first(month), rain = sum(rain), .by = year), aes(x = month, y = rain)) +
+    geom_bar(stat = "identity", width=250) +
+    labs(
+        x = "Year",
+        y = "Rainfall (mm)"
+    )
+ggplot(rainfall_data %>% summarise(month = first(month), SOI = mean(SOI), .by = year), aes(x = month, y = SOI)) +
+    geom_line(stat = "identity", width=250) +
+    labs(
+        x = "Year",
+        y = "SOI"
+    )
+```
+
+# Generate the synthetic timeseries
+Here we take our covariates and use our target smooths to create some vaguely realistic synthetic dataset.
+
+```{r}
+set.seed(2319)
+scale <- 0.25
+streamflow_data <- rainfall_data %>% tsSim(scale=scale)
+
+wrap_plots(
+    ggplot(streamflow_data, aes(x = month, y = flow)) +
+        geom_line() +
+        labs(
+            x = "Year",
+            y = "Streamflow (ML)"
+        ),
+    ggplot(streamflow_data, aes(x = month, y = flow)) +
+        geom_line() +
+        #log scale
+        scale_y_log10() +
+        labs(
+            x = "Year",
+            y = "Log Streamflow (ML)"
+        ),
+    ggplot(streamflow_data, aes(x = month, y = rain)) +
+        geom_bar(stat = "identity") +
+        labs(
+            x = "Year",
+            y = "Rainfall (mm)"
+        ),
+    ncol = 1
+)
+
+# plot correlation to rainfall, soi
+wrap_plots(
+    ggplot(streamflow_data, aes(x = rain, y = flow)) +
+        geom_point() +
+        labs(
+            x = "Rainfall (mm)",
+            y = "Streamflow (ML)"
+        ),
+    ggplot(streamflow_data, aes(x = SOI, y = flow)) +
+        geom_point() +
+        labs(
+            x = "SOI",
+            y = "Streamflow (ML)"
+        ),
+    ncol = 2
+)
+```
+
+## Save the data
+
+```{r}
+fpath <- paste("synthetic_data", paste0("synthetic_streamflow_data.csv"), sep = .Platform$file.sep)
+# ensure it exists
+dir.create("synthetic_data", showWarnings = FALSE)
+write_csv(streamflow_data, fpath)
+```

@@ -18,11 +18,11 @@ As a strand to follow through the analysis, we will set the aim of find the unde
 
 GAMs are an extension on generalised linear models to incorporate nonlinear functions of the input variables. We will see a general equation below but the important parts we need to remember for our purposes are:
 
-- we are trying to model streamflow which is our response variable ($y$) using some covariates (input variables) ($x_j$)
-- we do this by finding some functions which perform some linear or nonlinear transformation the covariates and add the resulting outputs together (our sum of $f_j(x_j)$)
-- these functions called "smooths" in GAM world and are usually penalised regression splines - a flexible way to fit our nonlinear relationships
+- we are trying to model streamflow which is our response/target variable ($y$) using some covariates (input variables) ($x_m$)
+- we do this by finding some functions which perform some linear or nonlinear transformation the covariates and add the resulting outputs together (our sum of $f_m(x_m)$)
+- these functions are called "smooths" in GAM world and are usually penalised regression splines - a flexible way to fit our nonlinear relationships
 - we conveniently ignore the link function here which can be used to change of our additive model to the scale of the response variable if needed - we will go into this more below
-- we assume that our model fits our observations with gaussian residuals of standard deviation $\sigma$ - $\mathcal{N}(0,\sigma)$
+- we assume that our model fits our observations with gaussian residuals of standard deviation $\sigma$ - $\mathcal{N}(0,\sigma^2)$
 - if you're new to splines/smooths this will all make more sense as we proceed and start plotting them!
 
 $$y=\alpha + \sum_{m}^{M}f_m\left(x_m\right) + \epsilon \qquad \epsilon \sim \mathcal{N}(0,\sigma^2)$$
@@ -127,7 +127,7 @@ summary(m1) # text summary of the model
 draw(parametric_effects(m1)) # plot our linear trend term
 ```
 
-Looking at the estimated linear trend (given by `draw(parametric_effects(m1))`) there's a fair bit of uncertainty, and this can also be see examining the "Parametric coefficients" section of `summary()`. Lets use the `gratia` function `appraise()` to check the residuals of the model.
+Looking at the estimated linear trend (given by `draw(parametric_effects(m1))`) there's a fair bit of uncertainty, and this can also be seen examining the "Parametric coefficients" section of `summary()`. Lets use the `gratia` function `appraise()` to check the residuals of the model.
 
 ```{r}
 appraise(m1)
@@ -190,7 +190,11 @@ wrap_plots(
     pred_plot + scale_y_log10(),
     ncol = 1
 )
+```
 
+You can see we have now have a model with much improved residuals given we are now starting to explain some of the variability in the data (R-sq.(adj) = 0.16). The seasonal component shows variability in the flow that peaks around March and troughs in the late part of the year. This can be seen in the prediction plot too where we have some varibility on top of the trend. However we also see something strange, the effect of `moy` is noticeably different from the end of December to the beginning of January. We can't blame the model, its just cranking the handle and doing its very best. But we can use some *prior knowledge* to ensure the model is coherent and thus be more confident in our results. There are many types of splines we can use in `mgcv` (see `?smooth.terms`). We wont go into them all here, but we will make use of a cyclic spline (`bs="cc"`) which is specifically designed to ensure the ends are penalised to match, i.e., there should be no large discontinuity in the seasonal component. We will adopt this fix in the models below and you can check out the fixed smooth below.
+
+```{r}
 # gratia has a function derivatives() so that we can see how the smooth is changing and how certain we are that it is increasing or decreasing. You can use select="s(time)" in both this and the draw(m3) function above to plot a single smooth.
 wrap_plots(
     pred_plot + scale_y_log10(),
@@ -199,11 +203,11 @@ wrap_plots(
 )
 ```
 
-You can see we have now have a model with much improved residuals given we are now starting to explain some of the variability in the data (R-sq.(adj) = 0.16). The seasonal component shows variability in the flow that peaks around March and troughs in the late part of the year. This can be seen in the prediction plot too where we have some varibility on top of the trend. However we also see something strange, the effect of `moy` is noticeably different from the end of December to the beginning of January. We can't blame the model, its just cranking the handle and doing its very best. But we can use some *prior knowledge* to ensure the model is coherent and thus be more confident in our results. There are many types of splines we can use in `mgcv` (see `?smooth.terms`). We wont go into them all here, but we will make use of a cyclic spline (`bs="cc"`) which is specifcially designed to ensure the ends are penalised to match, i.e., there should be no large discontinuity in the seasonal component. We will adopt this fix in the models below and you can check out the fixed smooth below.
+The time trend itself is picking up now some of the broader patterns with periods of higher streamflow around 1990 and in the 2020s. Time is once again identified as significant by `mgcv` (p = 0.00635). One question we could ask is if the trend is increasing or decreasing at any point in time. We can look at the derivatives at each point along the time smooth and determine signficant periods as those where the uncertainty bands are either both above or both below zero indicating the model is confident in `s(time)` increasing or decreasing, respectively. When we use `gratia::derivatives()` to look for significant periods of change in this trend we see that the model is showing that the magnitude of this trend was very likely increasing through the 2010s.
 
-The time trend itself is picking up now some of the broader patterns with periods of higher streamflow around 1990 and in the 2020s. Time is once again identified as significant by `mgcv` (p = 0.00635). When we use `gratia::derivatives()` to look for significant periods of change in this trend we see that the model is showing that the magnitude of this trend was very likely increasing through the 2010s.
+## Here comes the rain
 
-But we still haven't explored what we could strongly suspect to be the main driver of streamflow variability: rainfall-runoff processes. We expect this to have some nonlinearity, clearly we are grossly simplifying the processes in the catchment in particular with respect to groundwater interactions (and of course to let you in on a secret, in this example we have employed nonlinearity for this term when creating our synthetic data). So we add a smooth on monthly rainfall (`s(rain)`).
+We still haven't explored what we could strongly suspect to be the main driver of streamflow variability: rainfall-runoff processes. We expect this to have some nonlinearity, clearly we are grossly simplifying the processes in the catchment, in particular with respect to groundwater interactions. Of course to let you in on a secret, in this example we have employed nonlinearity for this term when creating our synthetic data. So we add a smooth on monthly rainfall (`s(rain)`).
 
 In addition we add in the impact of longer term climatic variability on the streamflow. In this dataset we capture this through the Southern Oscillation Index (SOI) which we interpret as the effect of longer periods of wet and dry on the catchment which contribute to the overall streamflow signal. For example, we might expect say soil moisture to be lower after extended dry periods leading to less streamflow for a given amount of rainfall compared to times with waterlogged soil. Here we introduce another smooth on this term.
 
@@ -233,7 +237,7 @@ wrap_plots(
 
 We have a really good fit now, we are explaining a lot of the variance (R-sq.(adj) = 0.881). We have some interesting and realistic looking smooths on the new variables of rainfall and SOI with low uncertainty. The SOI smooth looks reasonable, during periods of high SOI (La Niña) we might expect wetter conditions compared to periods of low SOI (El Niño). The smooths are all determined to be significant by `mgcv` but note our time smooth has changed from `m3`, though again with p=0.00723.
 
-But all is not well with our time smooth. We use the `gam.check()` diagnostic to check our model and the basis dimension checking (see the returned text) is returning that something is off about the `s(time)` smooth. It's indicating that we may need to increase the number of maximum knots in the smooth above the default `k=10` to fully explore the space of possible functions. You can see `choose.k` for more information on this diagnostic and we will explore the implications of this below.
+But all is not well with our time smooth. We use the `gam.check()` diagnostic to check our model. Most of the plots will be familiar from our previous dalliance with the `appriase()` function. However, we also have additional information on the complexity of the smooths. Briefly, by increasing the number of knots available for a spline to fit data, we can increase the ability of the function to take on very complex shapes. The basis dimension checking (see the returned text) is returning that something is off about the `s(time)` smooth. It's indicating that we may need to increase the number of maximum knots in the smooth above the default `k=10` to fully explore the space of possible function fits. You can see `?choose.k` for more information on this diagnostic and we will explore the implications of this below.
 
 ```{r}
 gam.check(m4)
@@ -241,7 +245,7 @@ gam.check(m4)
 
 # Wiggliness (the technical term)
 
-Below we look at the effects of increasing the maximum number of knots in the time smooth. Smooths have of course a penalty term which controls the wiggliness of the smooth as it attempts to fit the data. However, there is still some trade-off allowed between the complexity of the smooth and goodness of fit. By increasing `k`, we allow the model to explore a broader range of possible fits to the data and find that there are some fits to the data that better navigate that trade-off. Thus the smooth changes as we increase `k`.
+Below we look at the effects of increasing the maximum number of knots in the time smooth. Smooths have of course a penalty term which controls the "wiggliness" of the smooth as it attempts to fit the data. However, there is still some trade-off allowed between the complexity of the smooth and goodness of fit. By increasing `k`, we allow the model to explore a broader range of possible fits to the data and find that there are some fits to the data that better navigate that trade-off. Thus the smooth changes as we increase `k`.
 
 ```{r}
 m4_med <- gam(
@@ -261,22 +265,21 @@ draw(compare_smooths(
 
 ```
 
-But are these trends really realistic? What are the other possible explanations for this highly variable time trend? One of the common afflictions of timeseries data is autocorrelation and particularly for us problems can arise when the residuals are not independent (i.i.d.). We could for instance imagine a flood event with a duration that spans multiple data points leading to correlated residuals in time if our model consistently under predicts an event perhaps. Or perhaps there are storages in the system which result could result in extented periods of increased baseflow after an event occurs. Here we model on the monthly scale so perhaps in non-synthetic data it would be less of a problem, but we could still imagine processes on medium timescales leading to autocorrelation in the residuals of our imperfect model.
+But are these trends really realistic? What are the other possible explanations for this highly variable time trend? One of the common afflictions of timeseries data is autocorrelation and particularly for us problems can arise when the residuals are not independent (i.i.d.). We could for instance imagine a flood event with a duration that spans multiple data points leading to correlated residuals in time if our model consistently under predicts an event perhaps. Or perhaps there are storages in the system which could result in extented periods of increased baseflow after an event occurs. Here we model on the monthly scale so perhaps in non-synthetic data it would be less of a problem, but we could still imagine processes on medium timescales leading to autocorrelation in the residuals of our imperfect model.
 
-What makes it particularly bad in this situation, however, is that we have a very flexible term (`s(time)`) which is able to absorb some of this autocorrelation. If residuals were purely independent it wouldn't be a problem as only having a number of knots close to/equal to the number of observations would really drive these residuals into our time smooth. With autocorrelated residuals though, the model picks up these patterns and does what it does best, fits them using any and every means available to it. Lets not blame the model, its really trying its very best. But this process means that our flexible smooth on time can absorb/fit these patterns if we give it sufficient flexibility (as in the `k=30, 100` cases). Lets do a check for autocorrelation in the residuals.
+What makes it particularly bad in this situation, however, is that we have a very flexible term (`s(time)`) which is able to absorb some of this autocorrelation. If residuals were purely independent it wouldn't be a problem as only having a number of knots close to/equal to the number of observations would really drive these residuals into our time smooth. With autocorrelated residuals though, the model picks up these patterns and does what it does best: fits them using any and every means available to it. Lets not blame the model, its really trying its very best. But this process means that our flexible smooth on time can absorb/fit these patterns if we give it sufficient flexibility (as in the `k=30, 100` cases). Lets do a check for autocorrelation in the residuals.
 
 ```{r}
 # acf(residuals(m4, type="response"))
 pacf(residuals(m4, type="response"))
-# acf(residuals(m4_med, type="response"))
 pacf(residuals(m4_med, type="response"))
 ```
 
-Looking at the residuals for model `m4` we can see there is large autocorrelation in the residuals and in model `m4_med` we can see this still present but partially absorbed by our much higher complexity `s(time)`. The partial autocorrelation function (PACF) tends to indicate the highest effect is via an AR1 process (high correlation at lag = 1).
+Looking at the residuals for model `m4` we can see there is large autocorrelation in the residuals and in model `m4_med` we can see this still present but partially absorbed by our much higher complexity `s(time)`. The partial autocorrelation function (PACF) tends to indicate the highest effect is via an AR1 process (high correlation at lag = 1). See `?acf` for more details on `pacf` vs `acf`.
 
 # Facing down autocorrelation
 
-So how can we deal with this? Well up until this point we have been using the `gam` function in `mgcv`, and we will find no help there. However, we can look to the `gamm` function which fits a Generalized Additive Mixed Model (GAMM). Again this post isn't designed to be a textbook on GAM(M)s so practically for us it means that we can use `lme` correlation structures to model the residuals. This means we can tell the model to expect AR1 correlation residuals and account for these when fitting (instead of heaping these patterns into our precious time smooth). Specifically we will use the `correlation` argument and specify `corAR1()` (see `?corClasses`). Lets take a look shall we.
+So how can we deal with this? Well up until this point we have been using the `gam` function in `mgcv`, and we will find no help there. However, we can look to the `gamm` function which fits a Generalized Additive Mixed Model (GAMM). Again this post isn't designed to be a textbook on GAM(M)s, so practically for us it means that we can use `lme` correlation structures to model the residuals. This means we can tell the model to expect AR1 correlation residuals and account for these when fitting (instead of heaping these patterns into our precious time smooth). Specifically we will use the `correlation` argument and specify `corAR1()` (see `?corClasses`). Lets take a look shall we.
 
 ```{r}
 # fit again a model with a large number of knots for time, but now with AR1 residuals
@@ -289,7 +292,7 @@ m5 <- gamm(
 )
 summary(m5$gam)
 appraise(m5$gam)
-# acf(residuals(m5$lme, type="normalized"))
+
 pacf(residuals(m5$lme, type="normalized"))
 
 draw(compare_smooths(
@@ -297,7 +300,7 @@ draw(compare_smooths(
 ))
 ```
 
-Hey! Comparing our time smooths from our `m4_mlrg` model above to our new `m5` model (the same model just with AR1 residuals structure specified in `gamm`, also see "A note" section), our time smooth is now looking much better. The model is no longer trying to fit the autocorrelation patterns using `s(time)` as expected. Lets go ahead and look at the smooths from our final model against the functions we used to create the synthetic data.
+Hey! Comparing our time smooths from our `m4_lrg` model above to our new `m5` model (the same model just with AR1 residuals structure specified in `gamm`, also see "A small note" section), our time smooth is now looking much better. The model is no longer trying to fit the autocorrelation patterns using `s(time)` as expected. Lets go ahead and look at the smooths from our final model against the functions we used to create the synthetic data.
 
 ```{r}
 # get the "true" relationships
@@ -320,17 +323,18 @@ wrap_plots(
     ncol = 2
 )
 
+pred_plot <- plot_model_prediction(m5$gam, streamflow_data, exp_bool = T)
 wrap_plots(
-    draw(derivatives(m5, select="s(time)"), add_change = TRUE, change_type = "sizer"),
-    plot_model_prediction(m5$gam, streamflow_data, exp_bool = T),
+    pred_plot,
+    pred_plot + scale_y_log10(),
     ncol = 1
 )
 
 ```
 
-Looking excellent thanks to the wonders of synthetic data! Note that there was actually no underlying trend in the streamflow over time and our model now correctly picks that! The model still indicates that an average estimate is slightly increasing (take note of the models above to see how this could still be a valid explanation for the data) but it appropriately shows that it is in no way confident (p=0.329 so it is not identified as a significant smooth).
+Looking excellent thanks to the wonders of synthetic data! Note that there was actually no underlying trend in the streamflow over time and our model now correctly picks that. The model still indicates that an average estimate is slightly increasing (take note of the models above to see how this could still be a valid explanation for the data) but it appropriately shows that it is in no way confident (p=0.329 so it is not identified as a significant smooth).
 
-This is a good reminder, in light of all the model fits above, there are so many environmental processes working at different time scales that influence the signals we measure. We have to be really careful about what we are modelling, how we are modelling it, and what could be constituting any underlying trends that we try to measure in a lumped way (e.g., using a smooth on time). GAMs are a really neat tool, and are highly interpretable. But of course with any model, it only answers the questions posed to it.
+This is a good reminder, in light of all the model fits above, there are so many environmental processes working at different time scales that influence the signals we measure. We have to be really careful about what we are modelling, how we are modelling it, and what could be constituting any underlying trends that we try to measure in a lumped way (e.g., using a smooth on time). GAMs are a really neat tool, and are highly interpretable. But of course as with any model, it only answers the questions posed to it.
 
 # Further reading
 
@@ -341,16 +345,15 @@ This is a good reminder, in light of all the model fits above, there are so many
 
 # A small note
 
-If you got this far well done and as a reward some nitpicking. `gam` and `gamm` fit the model differently (also note from `?gamm` help: gamm is not as numerically stable as gam: an lme call will occasionally fail). Again the purpose of this post was just to show some of the issues with synthetic data, but I feel compelled to point out that `m4_med` fit with `gam` is not quite equivalent to `m5` fit with `gamm`. If you fit a `gamm` model with only `k=30` knots for time, you will get a different (reduced complexity) fit than with `gam`. All the points above still stand and the point was to demonstrate that taking into account autocorrelation is important. But to hammer things home, we look at the `k=100` case both with and without AR1 residuals with `gamm` and compare the time smooths. We also added specific knot values for the `moy` to specify the start and end point of our cyclic spline. I didn't want to over complicate the `gam` models above as it doesn't change any of our results, but this follows discussion in Pedersen et al. (2019) and is explored more in [Gavin Simpson's blog posts](https://fromthebottomoftheheap.net/2015/11/21/climate-change-and-spline-interactions/).
+If you got this far, well done. As a reward: some nitpicking. `gam` and `gamm` fit the model differently (also note from `?gamm` help: gamm is not as numerically stable as gam: an lme call will occasionally fail). Again the purpose of this post was just to demonstrate some of the issues using synthetic data, but I feel compelled to point out that `m4_lrg` fit with `gam` is not quite equivalent to `m5` fit with `gamm`. Additionally, if you fit a `gamm` model with only `k=30` knots for time, you will get a different (reduced complexity) fit than with `gam`. All the issues and solutions raised above still stand, and the point was to demonstrate that taking into account autocorrelation is important. But to hammer things home, we look at the `k=100` case both with and without AR1 residuals with `gamm` and compare the time smooths.
 
-You can see the `gamm` model with AR1 residuals holds up even in the face of a very flexible time smooth. The reason to do things correctly is not that you wont get the right answers sometimes, but rather that the statistical beasts waiting to trip you up are always lurking in the shadows waiting to spoil your nice analysis.
+You can see the `gamm` model with AR1 residuals holds up even in the face of a very flexible time smooth. The reason to do things correctly is not that you wont get the right answers sometimes, but rather that statistical beasts are always lurking in the shadows waiting to spoil your nice analysis.
 
 ```{r}
 # To drive the point home here are a huge number of knots
 m4_lrg <- gamm(
     log_flow ~ s(time, bs="tp", k=100) + s(moy, bs="cc") + s(rain) + s(SOI),
     data = streamflow_data,
-    knots = list(moy = c(0,12)),
     method = "REML",
     family = gaussian(link="identity")
 )
@@ -359,7 +362,6 @@ m5 <- gamm(
     log_flow ~ s(time, bs="tp", k=100) + s(moy, bs="cc") + s(rain) + s(SOI),
     data = streamflow_data,
     correlation = corAR1(), # our correlation structure
-    knots = list(moy = c(0,12)),
     method = "REML",
     family = gaussian(link="identity")
 )
